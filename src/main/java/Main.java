@@ -43,11 +43,13 @@ public class Main {
                     depositMoney();
                     break;
                 case 4:
+                    transferMoney();
                     break;
                 case 5:
                     createNewBank();
                     break;
                 case 6:
+                    printLastTransactions();
                     break;
                 case 7:
                     printActions();
@@ -56,6 +58,16 @@ public class Main {
 
         }
 
+    }
+
+    private static void printLastTransactions() {
+        System.out.println("Check history of account: ");
+        accountManager.printAccountList();
+        int accNumber = scanner.nextInt();
+        scanner.nextLine();
+        accNumber = accNumber - 1;
+        List<String> tempTransactions = accountManager.transactionList(AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber));
+        tempTransactions.forEach(System.out::println);
     }
 
     private static Pair<Integer, Integer> getAccNumbers() {
@@ -99,7 +111,28 @@ public class Main {
         accountManager.withdrawMoneyFromAccount(AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber), depositBalance);
         System.out.println(AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber).getAccountOwner() + " " + AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber).getBalance() + " zł");
     }
-    
+
+    private static void transferMoney() throws TransferCannotBeNegativeException {
+        if ((long) AccountManager.AVAILABLE_USER_ACCOUNTS.size() >= 2) {
+            System.out.println("Choose account from which transfer money: ");
+            Pair<Integer, Integer> accNumber = getAccNumbers();
+            System.out.println("Enter how much you want to transfer: ");
+            int transferredMoney = scanner.nextInt();
+            scanner.nextLine();
+            accountManager.transferMoney(AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber.a),
+                    AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber.b), transferredMoney);
+
+            System.out.println("transfered from :"
+                    + AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber.a).getAccountOwner()
+                    + " Amount: " + transferredMoney + " to "
+                    + AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber.b).getAccountOwner() +
+                    " Balance is : "
+                    + AccountManager.AVAILABLE_USER_ACCOUNTS.get(accNumber.b).getBalance()
+                    + " zł");
+        } else {
+            System.out.println("There is insufficiently accounts created");
+        }
+    }
 
     private static void createNewAccount() throws BalanceCannotBeNegativeException {
         if ((long) Bank.AVAILABLE_BANKS.size() != 0) {
