@@ -28,5 +28,18 @@ class AccountManagerTest extends Specification{
         account.getBalance() == 200;
     }
 
+    def "Withdraw money from account"(){
+        given:
+        def account = new AccountManager().createUserAccount("Test", 100.0,"123123123",  Bank.createNewBank("Bank", "glowny","email"))
+        def accountManager = new AccountManager()
+
+        when:
+        accountManager.withdrawMoneyFromAccount(account, 100);
+
+
+        then:
+        account.getBalance() == 0;
+    }
+
 
 }
