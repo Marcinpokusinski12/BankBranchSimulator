@@ -12,4 +12,12 @@ class AccountTest extends Specification{
         thrown(BalanceCannotBeNegativeException.class)
     }
 
+    def "checkAddedTransactions"() {
+        when:
+        def account = new Account("Marcin Test", 100.00, "123123123",Bank.createNewBank("Testowy", "lota 40", "791 974 794"))
+        account.transactionAdd("Transaction created")
+
+        then:
+        account.getTransaction().stream().findFirst().get().toString() == "Transaction created"
+    }
 }
