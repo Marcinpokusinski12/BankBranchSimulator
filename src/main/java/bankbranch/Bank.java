@@ -1,5 +1,7 @@
 package bankbranch;
 
+import account.Account;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,11 +13,18 @@ public class Bank {
     private String bankAddress;
     private String contact;
 
+    private List<Account> userAccounts;
+
+    public List<Account> getUserAccounts() {
+        return userAccounts;
+    }
+
     public Bank(String bankName, String bankAddress, String contact) {
         this.id = nextId++;
         this.bankName = bankName;
         this.bankAddress = bankAddress;
         this.contact = contact;
+        this.userAccounts = new ArrayList<>();
     }
 
 
