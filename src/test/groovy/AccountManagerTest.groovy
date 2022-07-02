@@ -3,6 +3,20 @@ import bankbranch.Bank
 import spock.lang.Specification
 
 class AccountManagerTest extends Specification{
+    def "checkLastTransactionsForUsers"() {
+        given:
+        def accountManager = new AccountManager();
+        def bank = Bank.createNewBank("Bank", "glowny", "email")
+        def userFirst = new AccountManager().createUserAccount("Test", 100.0,"123123123", bank);
+        def userSecond = new AccountManager().createUserAccount("Test", 100.0,"123123143", bank);
+
+        when:
+        accountManager.transferMoney(userFirst, userSecond, 50);
+        accountManager.depositMoneyToAccount(userFirst, 150);
+
+        then:
+        accountManager.transactionList(userFirst).stream().count() == 2
+    }
 
     def "Add Account to existing Bank"() {
         given:
@@ -40,6 +54,18 @@ class AccountManagerTest extends Specification{
         then:
         account.getBalance() == 0;
     }
+    def "Cannot transfer to the same account"(){
+        given:
+        def account = new AccountManager().createUserAccount("Test", 100.0,"123123123",  Bank.createNewBank("Bank", "glowny","email"))
+        def accountSecond = new AccountManager().createUserAccount("Test", 100.0,"123123123",  Bank.createNewBank("Bank", "glowny","email"))
+        def accountManager = new AccountManager()
 
+        when:
+        var value = accountManager.transferMoney(account, accountSecond, 50);
+
+
+        then:
+        !value
+    }
 
 }
