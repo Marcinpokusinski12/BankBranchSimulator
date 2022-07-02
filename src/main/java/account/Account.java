@@ -14,6 +14,7 @@ public class Account {
     private final String accountNumber;
     private double balance;
     private final Bank bank;
+    private List<String> transactions;
 
     @Override
     public String toString() {
@@ -35,6 +36,7 @@ public class Account {
             throw new BalanceCannotBeNegativeException("You can't create account with negative balance", balance);
         }
         this.balance = balance;
+        this.transactions = new ArrayList<>();
     }
 
     public int getId() {
@@ -61,4 +63,11 @@ public class Account {
         return bank;
     }
 
+    public void transactionAdd(String transaction){
+       this.transactions.add(transaction);
+    }
+
+    public List<String> getTransaction(){
+        return transactions;
+    }
 }
