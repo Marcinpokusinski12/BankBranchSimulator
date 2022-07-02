@@ -2,6 +2,7 @@ package account;
 
 import bankbranch.Bank;
 import exceptions.BalanceCannotBeNegativeException;
+import exceptions.TransferCannotBeNegativeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,16 @@ public class AccountManager {
         double balance = userAccount.getBalance();
         userAccount.setBalance(depositedAmount + balance);
         String message = "Amount deposited " + depositedAmount + "balance " + userAccount.getBalance();
+    }
+
+    public void withdrawMoneyFromAccount(Account userAccount, double withdrawAmount) {
+        if (withdrawAmount > 0) {
+            double balance = userAccount.getBalance();
+            userAccount.setBalance(balance - withdrawAmount);
+            String message = "Amount withdraw " + withdrawAmount + "balance " + userAccount.getBalance();
+        } else {
+            System.out.println("Deposited amount is zero or less than zero");
+        }
     }
 
 }
